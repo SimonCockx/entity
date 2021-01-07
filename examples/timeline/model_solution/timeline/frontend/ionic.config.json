@@ -1,5 +1,6 @@
 {
   "name": "timeline-frontend",
   "integrations": {},
-  "type": "angular"
+  "type": "angular",
+  "interactive": true
 }

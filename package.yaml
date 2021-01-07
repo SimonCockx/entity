@@ -21,9 +21,24 @@ description:         Please see the README on GitHub at <https://github.com/Simo
 
 dependencies:
 - base >= 4.7 && < 5
+- language-python
+- language-typescript
+- process
+- containers
+- mtl
+- split
+- data-default
+
+default-extensions:
+- RecordWildCards
+- DuplicateRecordFields
+- FlexibleContexts
+- FlexibleInstances
 
 library:
   source-dirs: src
+  ghc-options:
+    - -Wall
 
 executables:
   entity-exe:
