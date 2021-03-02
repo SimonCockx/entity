@@ -28,7 +28,7 @@ export class EventManagerService {
   public delete(event: Event): Observable<void> {
     this.entities.delete(event.id);
     return this.http.delete(`${this.url}${event.id}/`).pipe(
-      map((response) => {})
+      map((_response) => {})
     );
   }
 
