@@ -1,7 +1,7 @@
 module Entity.Languages.TypeScript
     ( typeScript
     , TSField (..)
-    , typeScriptModel
+    -- , typeScriptModel
     ) where
 
 import Entity.Core
@@ -15,7 +15,7 @@ typeScript :: Language TypeScriptAST
 typeScript = Language prettyWriteTypeScript
     where
         prettyWriteTypeScript path ast = do
-            writeFile path $ renderDeclarationSourceFile ast
+            appendFile path $ renderDeclarationSourceFile ast
             callCommand $ "prettier --write --loglevel error " ++ path
 
 export :: Statement -> DeclarationElement
@@ -67,13 +67,13 @@ fieldToStatement name field
 fieldToParameter :: Name -> TSField -> Parameter
 fieldToParameter name field = param (toCamel name) (fieldToTSType field)
 
-typeScriptModel :: (Monad m) => EntityModel TypeScriptAST m
-typeScriptModel = entityModel "TypeScript" typeScript df re (Just $ \n -> toKebab n ++ ".ts")
-    where
-        df StringField  = TSStringField
-        df IntegerField = TSNumberField
-        df DateField    = TSDateField
+-- typeScriptModel :: (Monad m) => EntityModel TypeScriptAST m
+-- typeScriptModel = entityModel "TypeScript" typeScript df re (Just $ \n -> toKebab n ++ ".ts")
+--     where
+--         df StringField  = TSStringField
+--         df IntegerField = TSNumberField
+--         df DateField    = TSDateField
 
-        re Entity {..} = return
-            [ export $ tsClass name fields
-            ]
+--         re Entity {..} = return
+--             [ export $ tsClass name fields
+--             ]

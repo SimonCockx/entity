@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c10fa594474d0f689edc29ccf8f3611109d7ff0d38e57fb12933cd00a3475166
+-- hash: 9f8110bf1355806ad884e7fdf209d466d7b9c447905d50718fdbcb1e23ef25fa
 
 name:           entity
 version:        0.1.0.0
@@ -27,12 +27,10 @@ source-repository head
 
 library
   exposed-modules:
-      Entity.ComponentConfig
       Entity.Core
+      Entity.Entity
       Entity.Languages.Python
       Entity.Languages.TypeScript
-      Entity.RefactoredEntity
-      Entity.RefactorTest
       Entity.Util
   other-modules:
       Paths_entity
@@ -44,6 +42,8 @@ library
       base >=4.7 && <5
     , containers
     , data-default
+    , directory
+    , filepath
     , hvect
     , language-python
     , language-typescript
@@ -65,7 +65,9 @@ executable entity-exe
       base >=4.7 && <5
     , containers
     , data-default
+    , directory
     , entity
+    , filepath
     , hvect
     , language-python
     , language-typescript
@@ -88,7 +90,9 @@ test-suite entity-test
       base >=4.7 && <5
     , containers
     , data-default
+    , directory
     , entity
+    , filepath
     , hvect
     , language-python
     , language-typescript

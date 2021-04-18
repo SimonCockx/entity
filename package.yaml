@@ -30,6 +30,8 @@ dependencies:
 - data-default
 - hvect
 - template-haskell
+- directory
+- filepath
 
 default-extensions:
 - RecordWildCards

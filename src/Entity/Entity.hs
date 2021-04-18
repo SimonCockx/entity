@@ -1,7 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE ExistentialQuantification #-}
 
-module Entity.RefactoredEntity where
+module Entity.Entity where
 
 import qualified Language.Haskell.TH as TH
 import Entity.Util
@@ -11,21 +11,8 @@ data FieldType
     = StringField
     | IntegerField
     | DateField
-    -- | forall e. Entity e => RelationField e
     deriving (Eq, Ord, Show)
 
-
-data EntityInfo a = Entity { name :: Name
-                           , fields :: [(Name, a)]
-                           }
-
-emap :: (Name -> a -> b) -> EntityInfo a -> EntityInfo b
-emap f Entity {..} = Entity name (map (\(n, v) -> (n, f n v)) fields)
-
-instance Functor EntityInfo where
-    fmap = emap . const
-
--- type Entity = EntityInfo FieldType
 
 class Entity a where
     entityName :: a -> Name

@@ -1,5 +1,10 @@
 # entity
 
+## External dependencies
+
+- black (`pip install black`)
+- prettier (`npm install prettier -g`)
+
 ## Goals
 
 - From entity description, generate entity classes and entity managers. (Django, TypeScript)
@@ -59,8 +64,3 @@ description = TextField() // Optional: overwrite field
 
 TypeScript
 location = ./frontend/src/app/api/
-
-## External dependencies
-
-- black (`pip install black`)
-- prettier (`npm install prettier -g`)
