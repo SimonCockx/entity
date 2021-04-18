@@ -28,12 +28,27 @@ dependencies:
 - mtl
 - split
 - data-default
+- hvect
+- template-haskell
 
 default-extensions:
 - RecordWildCards
 - DuplicateRecordFields
 - FlexibleContexts
 - FlexibleInstances
+- DefaultSignatures
+- MultiParamTypeClasses
+- TypeFamilies
+- TypeOperators
+- ExistentialQuantification
+- GADTs
+- DataKinds
+- UndecidableInstances
+- PolyKinds
+- KindSignatures
+- ConstraintKinds
+- RankNTypes
+- ScopedTypeVariables
 
 library:
   source-dirs: src

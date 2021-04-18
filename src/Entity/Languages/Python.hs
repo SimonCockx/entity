@@ -45,15 +45,14 @@ fieldToStatement DjangoTextField = Call (Dot (Var (Ident "models" ()) ()) (Ident
 fieldToStatement DjangoIntegerField = Call (Dot (Var (Ident "models" ()) ()) (Ident "IntegerField" ()) ()) [] ()
 fieldToStatement DjangoDateField = Call (Dot (Var (Ident "models" ()) ()) (Ident "DateField" ()) ()) [] ()
 
-djangoModel :: EntityModel PythonAST DjangoField
-djangoModel = EntityModel python df re (Just $ const "entities.py")
+djangoModel :: (Monad m) => EntityModel PythonAST m
+djangoModel = entityModel "Django" python df re (Just $ const "entities.py")
     where
         df StringField  = DjangoCharField { maxLength = 255 }
         df IntegerField = DjangoIntegerField
         df DateField    = DjangoDateField
 
-        re (Entity name fields) = 
+        re (Entity name fields) = return $
             Module [ fromImport ["django", "db"] ["models"]
                    , pyClass (toPascal name) ["models.Model"] (map (\(fn, ft) -> assign (toSnake fn) (fieldToStatement ft)) fields)
                    ]
-

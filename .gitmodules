@@ -1,0 +1,3 @@
+[submodule "language-typescript"]
+	path = language-typescript
+	url = ./language-typescript

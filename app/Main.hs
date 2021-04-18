@@ -4,13 +4,15 @@ import Entity.Languages.Python
 import Entity.Languages.TypeScript
 import Entity.Core
 import Entity.Util
+import Control.Monad.Except
+import Entity.ComponentConfig
 import Data.Default ( Default(def) )
 import Control.Monad.Except (withExceptT, liftEither, runExceptT)
 import qualified Data.Map as Map
 
 
 n :: String -> Name
-n = fromKebab 
+n = fromKebab
 
 eventEntity :: Entity
 eventEntity = Entity 
@@ -18,16 +20,22 @@ eventEntity = Entity
     , fields = [(n "name", StringField), (n "year", IntegerField), (n "description", StringField)]
     }
 
-eventDjangoConfig :: EntityConfiguration DjangoField
-eventDjangoConfig = EntityConfiguration def def (Map.singleton (n "description") DjangoTextField)
+eventDjangoConfig :: ComponentConfig
+eventDjangoConfig = Map.fromList [("typeMap", ConfigListField [])]
 
-writeEntityIO :: EntityModel ast field -> EntityConfiguration field -> Entity -> IO ()
-writeEntityIO model entityConfig entity = do
-    res <- runExceptT $ withExceptT userError (writeEntity model def entityConfig entity)
-    liftEither res
+configMap :: ConfigMap
+configMap = Map.fromList [("Django:event", eventDjangoConfig)]
+
+-- eventDjangoConfig :: EntityConfiguration DjangoField
+-- eventDjangoConfig = EntityConfiguration def def (Map.singleton (n "description") DjangoTextField)
+
+writeComponentIO :: ConfigMap -> Component ast (ConfigEnvironment Error) -> IO ()
+writeComponentIO config component = do
+    res <- liftEither $ runExcept $ withExcept userError (runConfigEnvironment (writeComponent component) config)
+    res
 
 
 main :: IO ()
 main = do
-    writeEntityIO djangoModel eventDjangoConfig eventEntity
-    writeEntityIO typeScriptModel def eventEntity
+    writeComponentIO configMap (djangoModel eventEntity)
+    writeComponentIO configMap (typeScriptModel eventEntity)

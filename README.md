@@ -25,6 +25,7 @@ Notes:
 - how to handle multiple generations for one entity? (e.g. JSONEvent, Event, InitialEvent, each with its own field-mapping??)
 - handle renaming of variables (default, specify yourself) -> camelCase, pascal_case, ... (use common casing scripts?)
 - language-specific options (e.g. Java: package)
+- support optional fields?
 
 - get example with relations!
 

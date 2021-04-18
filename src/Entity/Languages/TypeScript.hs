@@ -26,9 +26,9 @@ param name t = RequiredOrOptionalParameter Nothing name Nothing (Just t)
 
 tsClass :: Name -> [(Name, TSField)] -> Statement
 tsClass name fs = ClassDeclaration (toPascal name) Nothing Nothing Nothing (
-    [ FieldDefinition (Just Private) Nothing [] (LeftHand "_isSynced" (Just $ Predefined BooleanType)) Nothing
+    [ FieldDefinition (Just Private) Nothing [] "_isSynced" (Just $ Predefined BooleanType) Nothing
     , GetterDefinition (Just Public) Nothing "isSynced" (Just $ Predefined BooleanType) (Block [SideEffect $ Return $ Var "this" `Dot` "_isSynced"])
-    , FieldDefinition (Just Public) Nothing [Readonly] (LeftHand "id" (Just $ Predefined NumberType)) Nothing
+    , FieldDefinition (Just Public) Nothing [Readonly] "id" (Just $ Predefined NumberType) Nothing
     ]
     ++ concatMap (uncurry fieldToStatement) fs
     ++ [ ConstructorDefinition (Just Public) (param "id" (Predefined NumberType) : map (uncurry fieldToParameter) fs) (Block 
@@ -52,7 +52,7 @@ fieldToTSType TSDateField = TypeReference $ TypeRef (TypeName Nothing "Date") No
 
 fieldToStatement :: Name -> TSField -> [ClassElement]
 fieldToStatement name field
-    = [ FieldDefinition (Just Private) Nothing [] (LeftHand pCamelName (Just ft)) Nothing
+    = [ FieldDefinition (Just Private) Nothing [] pCamelName (Just ft) Nothing
       , GetterDefinition (Just Public) Nothing camelName (Just ft) (Block 
             [SideEffect $ Return $ Var "this" `Dot` pCamelName])
       , SetterDefinition (Just Public) Nothing camelName (param newName ft) (Block
@@ -67,14 +67,13 @@ fieldToStatement name field
 fieldToParameter :: Name -> TSField -> Parameter
 fieldToParameter name field = param (toCamel name) (fieldToTSType field)
 
-typeScriptModel :: EntityModel TypeScriptAST TSField
-typeScriptModel = EntityModel typeScript df re (Just $ \n -> toKebab n ++ ".ts")
+typeScriptModel :: (Monad m) => EntityModel TypeScriptAST m
+typeScriptModel = entityModel "TypeScript" typeScript df re (Just $ \n -> toKebab n ++ ".ts")
     where
         df StringField  = TSStringField
         df IntegerField = TSNumberField
         df DateField    = TSDateField
 
-        re Entity {..} = 
+        re Entity {..} = return
             [ export $ tsClass name fields
             ]
-

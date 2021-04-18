@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ce4192a9414637f38fa6184ff71d0ca4bb75b4594d9d9be1704e12e6f92bbffe
+-- hash: c10fa594474d0f689edc29ccf8f3611109d7ff0d38e57fb12933cd00a3475166
 
 name:           entity
 version:        0.1.0.0
@@ -27,25 +27,30 @@ source-repository head
 
 library
   exposed-modules:
+      Entity.ComponentConfig
       Entity.Core
       Entity.Languages.Python
       Entity.Languages.TypeScript
+      Entity.RefactoredEntity
+      Entity.RefactorTest
       Entity.Util
   other-modules:
       Paths_entity
   hs-source-dirs:
       src
-  default-extensions: RecordWildCards DuplicateRecordFields FlexibleContexts FlexibleInstances
+  default-extensions: RecordWildCards DuplicateRecordFields FlexibleContexts FlexibleInstances DefaultSignatures MultiParamTypeClasses TypeFamilies TypeOperators ExistentialQuantification GADTs DataKinds UndecidableInstances PolyKinds KindSignatures ConstraintKinds RankNTypes ScopedTypeVariables
   ghc-options: -Wall
   build-depends:
       base >=4.7 && <5
     , containers
     , data-default
+    , hvect
     , language-python
     , language-typescript
     , mtl
     , process
     , split
+    , template-haskell
   default-language: Haskell2010
 
 executable entity-exe
@@ -54,18 +59,20 @@ executable entity-exe
       Paths_entity
   hs-source-dirs:
       app
-  default-extensions: RecordWildCards DuplicateRecordFields FlexibleContexts FlexibleInstances
+  default-extensions: RecordWildCards DuplicateRecordFields FlexibleContexts FlexibleInstances DefaultSignatures MultiParamTypeClasses TypeFamilies TypeOperators ExistentialQuantification GADTs DataKinds UndecidableInstances PolyKinds KindSignatures ConstraintKinds RankNTypes ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , containers
     , data-default
     , entity
+    , hvect
     , language-python
     , language-typescript
     , mtl
     , process
     , split
+    , template-haskell
   default-language: Haskell2010
 
 test-suite entity-test
@@ -75,16 +82,18 @@ test-suite entity-test
       Paths_entity
   hs-source-dirs:
       test
-  default-extensions: RecordWildCards DuplicateRecordFields FlexibleContexts FlexibleInstances
+  default-extensions: RecordWildCards DuplicateRecordFields FlexibleContexts FlexibleInstances DefaultSignatures MultiParamTypeClasses TypeFamilies TypeOperators ExistentialQuantification GADTs DataKinds UndecidableInstances PolyKinds KindSignatures ConstraintKinds RankNTypes ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , containers
     , data-default
     , entity
+    , hvect
     , language-python
     , language-typescript
     , mtl
     , process
     , split
+    , template-haskell
   default-language: Haskell2010
