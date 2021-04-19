@@ -113,10 +113,10 @@ djangoRepo entity = ComponentGenerator python (\(itf :&: modItf :&: HNil) -> gen
                 fNames = filter (/= "id") $ map (toSnake . fst) $ entityFields entity
                 fParams = map (\n -> param n Nothing Nothing) fNames
                 fArgs = map (\n -> ArgKeyword (Ident n ()) (Var (Ident n ()) ()) ()) fNames
-                listFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun listName [selfParam] Nothing [pyReturn $ Call (Var (Ident (modelName ++ ".objects.all") ()) ()) [] ()]) ()
-                getFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun getName [selfParam, param primaryKey Nothing Nothing] Nothing [pyReturn $ Call (Var (Ident (modelName ++ ".objects.get") ()) ()) [ArgExpr (Var (Ident primaryKey ()) ()) ()] ()]) ()
-                saveFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun saveName [selfParam, param eName Nothing Nothing] Nothing [StmtExpr (Call (Var (Ident (eName ++ ".save") ()) ()) [] ()) ()]) ()
-                createFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun createName (selfParam : fParams) Nothing [pyReturn $ Call (Var (Ident (modelName ++ ".objects.create") ()) ()) fArgs ()]) ()
+                listFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun listName [] Nothing [pyReturn $ Call (Var (Ident (modelName ++ ".objects.all") ()) ()) [] ()]) ()
+                getFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun getName [param primaryKey Nothing Nothing] Nothing [pyReturn $ Call (Var (Ident (modelName ++ ".objects.get") ()) ()) [ArgExpr (Var (Ident primaryKey ()) ()) ()] ()]) ()
+                saveFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun saveName [param eName Nothing Nothing] Nothing [StmtExpr (Call (Var (Ident (eName ++ ".save") ()) ()) [] ()) ()]) ()
+                createFun = Decorated [Decorator [Ident "staticmethod" ()] [] ()] (fun createName fParams Nothing [pyReturn $ Call (Var (Ident (modelName ++ ".objects.create") ()) ()) fArgs ()]) ()
 
 
 
@@ -181,4 +181,4 @@ djangoRESTView entity = ComponentGenerator python (\(itf :&: restItf :&: repoItf
                     , pyReturn $ Call (Var (Ident "JsonResponse" ()) ()) [ArgExpr (Dictionary [DictMappingPair (string "message") (string "success")] ()) (), ArgKeyword (Ident "status" ()) (int 204) ()] ()
                     ]
                 dispatchFun = Decorated [Decorator [Ident "method_decorator" ()] [ArgExpr (Var (Ident "csrf_exempt" ()) ()) ()] ()] (fun "dispatch" [selfParam, VarArgsPos (Ident "args" ()) Nothing (), VarArgsKeyword (Ident "kwargs" ()) Nothing ()] Nothing [pyReturn $ Call (Var (Ident "super.dispatch" ()) ()) [ArgVarArgsPos (Var (Ident "args" ()) ()) (), ArgVarArgsKeyword (Var (Ident "kwargs" ()) ()) ()] ()]) ()
-                registerFun = fun "register_urls" [param "urls" Nothing Nothing] Nothing [AugmentedAssign (Var (Ident "urls" ()) ()) (PlusAssign ()) (List [Call (Var (Ident "path" ()) ()) [ArgExpr (string endpoint) (), ArgExpr (Call (Var (Ident (listViewName ++ "as_view") ()) ()) [] ()) ()] ()] ()) ()] 
+                registerFun = fun "register_urls" [param "urls" Nothing Nothing] Nothing [AugmentedAssign (Var (Ident "urls" ()) ()) (PlusAssign ()) (List [Call (Var (Ident "path" ()) ()) [ArgExpr (string endpoint) (), ArgExpr (Call (Var (Ident (listViewName ++ ".as_view") ()) ()) [] ()) ()] ()] ()) ()] 

@@ -40,4 +40,4 @@ class ListEventView:
 
 
 def register_urls(urls):
-    urls += [path("api/events/", ListEventViewas_view())]
+    urls += [path("api/events/", ListEventView.as_view())]

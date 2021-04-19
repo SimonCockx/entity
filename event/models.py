@@ -9,17 +9,17 @@ class Event(models.Model):
 
 class EventRepo:
     @staticmethod
-    def list(self):
+    def list():
         return Event.objects.all()
 
     @staticmethod
-    def get(self, id):
+    def get(id):
         return Event.objects.get(id)
 
     @staticmethod
-    def save(self, event):
+    def save(event):
         event.save()
 
     @staticmethod
-    def create(self, name, date, description):
+    def create(name, date, description):
         return Event.objects.create(name=name, date=date, description=description)
